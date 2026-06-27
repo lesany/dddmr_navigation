@@ -32,7 +32,9 @@
   <node pkg="p2p_move_base" exec="clicked2goal.py" output="screen" respawn="false">
     <param name="use_sim_time" value="$(var use_sim)"/>
   </node>
-  
+
+  <!--- TF: base_link -> velodyne (required for mcl_feature to process point cloud) -->
+  <node pkg="tf2_ros" exec="static_transform_publisher" name="sensor2baselink" args="0.2 0.0 0.118 0.0 0.0 0 base_link velodyne" />
 
   <node pkg="rviz2" exec="rviz2" output="screen" respawn="false" args="-d $(find-pkg-share p2p_move_base)/rviz/p2p_move_base_localization.rviz">
     <param name="use_sim_time" value="$(var use_sim)"/>
