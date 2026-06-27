@@ -1,6 +1,16 @@
 <launch>
   <let name="use_sim" value="true"/>
   
+  <!--- TF: base_link -> velodyne (for Gazebo simulation) -->
+  <node pkg="tf2_ros" exec="static_transform_publisher" name="baselink2velodyne" args="0.2 0.0 0.118 0.0 0.0 0 base_link velodyne">
+    <param name="use_sim_time" value="$(var use_sim)"/>
+  </node>
+  
+  <!--- TF: base_link -> base_footprint -->
+  <node pkg="tf2_ros" exec="static_transform_publisher" name="baselink2footprint" args="0.0 0 -0.219 0.0 0.0 0 base_link base_footprint">
+    <param name="use_sim_time" value="$(var use_sim)"/>
+  </node>
+  
   <node pkg="lego_loam_bor" exec="mcl_feature" output="screen" respawn="false">
     <param from="$(find-pkg-share p2p_move_base)/config/go2_localization.yaml" />
     <remap from="/lslidar_point_cloud" to="/velodyne_points"/>
@@ -10,6 +20,7 @@
 
   <node pkg="dddmr_pg_map_server" exec="dddmr_pg_map_server_node" output="screen" respawn="false">
     <param from="$(find-pkg-share p2p_move_base)/config/go2_localization.yaml" />
+    <param name="use_sim_time" value="$(var use_sim)"/>
   </node>
 
   <node pkg="mcl_3dl" exec="mcl_3dl" output="screen" respawn="false">
