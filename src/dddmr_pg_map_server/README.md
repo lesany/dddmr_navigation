@@ -1,2 +1,0 @@
-# DDDMR MAP SERVER
-
